@@ -130,15 +130,15 @@ def register(email: str, password: str, db: Session = Depends(get_db)):
     user = models.User(
         email=email,
         password = hash_password(password),
-        is_verified = True,
-        verification_token = None
+        is_verified = False,
+        verification_token = verification_token
     )
     db.add(user)
     db.commit()
     db.refresh(user)
 
-    # verify_link = f"{FRONTEND_URL}/verify-email?token={verification_token}"
-    # send_verification_email(user.email, verify_link)
+    verify_link = f"{FRONTEND_URL}/verify-email?token={verification_token}"
+    send_verification_email(user.email, verify_link)
     return {"message": "User created. Check your email."}
 
 @app.get("/verify-email")

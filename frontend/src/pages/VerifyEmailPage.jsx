@@ -23,7 +23,7 @@ function VerifyEmailPage() {
             .then(() => {
                 setMessage("Пошту успішно підтверджено")
             })
-            .cathc((err) => {
+            .catch((err) => {
                 console.log(err);
                 setError("Не вдалося підтвердити пошту");
                 setMessage("");
