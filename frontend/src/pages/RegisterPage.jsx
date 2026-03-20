@@ -29,8 +29,10 @@ function RegisterPage() {
                 navigate("/login");
             }, 1000);
         } catch (err) {
-            console.log("REGISTER ERROR: ", err)
-            setError("Не вдалося створити акаунт");
+            console.log("REGISTER ERROR:", err);
+            console.log("REGISTER RESPONSE:", err.response);
+            console.log("REGISTER DETAIL:", err.response?.data);
+            setError(err.response?.data?.detail || "Не вдалося створити акаунт");
         }
     };
 
