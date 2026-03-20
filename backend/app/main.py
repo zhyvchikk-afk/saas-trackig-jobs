@@ -5,8 +5,9 @@ from jose import jwt
 from sqlalchemy.orm import Session
 from .db import Base, engine, SessionLocal
 from . import models
-from .auth import hash_password, verify_password, create_token
-from .config import SECRET_KEY, ALGORITHM
+from .auth import hash_password, verify_password, create_token, create_verification_token
+from .config import SECRET_KEY, ALGORITHM, FRONTEND_URL
+from .email_service import send_verification_email
 from .schemas import JobCreate, JobUpdate
 
 app = FastAPI()
@@ -116,13 +117,41 @@ def delete_job(
 
 @app.post("/register")
 def register(email: str, password: str, db: Session = Depends(get_db)):
+    existing_user = db.query(models.User).filter(models.User.email == email).first()
+
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already exists")
+
+    verification_token = create_verification_token()
+
     user = models.User(
         email=email,
-        password = hash_password(password)
+        password = hash_password(password),
+        is_verified = False,
+        verification_token = verification_token
     )
     db.add(user)
     db.commit()
-    return {"message": "User created"}
+    db.refresh(user)
+
+    verify_link = f"{FRONTEND_URL}/verify-email?token={verification_token}"
+    send_verification_email(user.email, verify_link)
+
+    return {"message": "User created. Check your email."}
+
+@app.get("/verify-email")
+def verify_email(token: str, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.verification_token == token).first()
+
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid verification token")
+    
+    user.is_verified = True
+    user.verification_token = None
+
+    db.commit()
+
+    return {"message": "Email verified successfully"}
 
 @app.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -130,6 +159,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=400, detail="Wrong credentials")
+    
+    if not user.is_verified:
+        raise HTTPException(status_code=403, detail="Please verify your email")
     
     token = create_token({"user_id": user.id})
     return {"access_token": token, "token_type": "bearer"}

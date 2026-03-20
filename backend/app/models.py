@@ -16,3 +16,5 @@ class User(Base):
     email = Column(String, unique=True)
     password = Column(String)
     is_active = Column(Boolean, default=True)
+    is_verified = Column(Boolean, default=False)
+    verification_token = Column(String, nullable=True)

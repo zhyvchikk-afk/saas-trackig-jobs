@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from jose import jwt
 from pwdlib import PasswordHash
+import secrets
 from .config import SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM
 
 password_hash = PasswordHash.recommended()
@@ -16,3 +17,6 @@ def create_token(data: dict):
     expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def create_verification_token():
+    return secrets.token_urlsafe(32)

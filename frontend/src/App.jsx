@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import JobsPage from "./pages/JobsPage";
 import RegisterPage from "./pages/RegisterPage";
 import api from "./api/axios";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
 
 // function App() {
 //   useEffect(() => {
@@ -34,6 +35,10 @@ function App() {
       <Route 
         path="/jobs" 
         element={token ? <JobsPage setToken={setToken} /> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/verify-email" 
+        element={<VerifyEmailPage />} 
       />
 
       <Route 
