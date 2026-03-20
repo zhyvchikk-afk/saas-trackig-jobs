@@ -130,7 +130,7 @@ def register(email: str, password: str, db: Session = Depends(get_db)):
     user = models.User(
         email=email,
         password = hash_password(password),
-        is_verified = False,
+        is_verified = True,
         verification_token = verification_token
     )
     db.add(user)
