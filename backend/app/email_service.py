@@ -1,5 +1,5 @@
 import resend
-from .config import RESEND_API_KEY, EMAIL_FROM
+from .config import RESEND_API_KEY, RESEND_EMAIL_FROM
 
 resend.api_key = RESEND_API_KEY
 
@@ -9,7 +9,7 @@ def send_verification_email(to_email: str, verify_link: str):
         raise ValueError("RESEND_API_KEY is not set")
     
     mess = {
-        "from": EMAIL_FROM,
+        "from": RESEND_EMAIL_FROM,
         "to": [to_email],
         "subject": "Підтвердіть свою пошту",
         "html": f"""
