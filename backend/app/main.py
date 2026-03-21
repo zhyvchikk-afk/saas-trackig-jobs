@@ -114,8 +114,6 @@ def delete_job(
 
     return {"message": "Job deleted"}
 
-
-
 @app.post("/register")
 def register(email: str, password: str, db: Session = Depends(get_db)):
     existing_user = db.query(models.User).filter(models.User.email == email).first()
@@ -170,3 +168,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     
     token = create_token({"user_id": user.id})
     return {"access_token": token, "token_type": "bearer"}
+
+@app.delete("/clear-users")
+def clear_users(db: Session = Depends(get_db)):
+    db.query(models.User).delete()
+    db.commit()
+    return{"message": "All users deleted"}
