@@ -118,8 +118,6 @@ def delete_job(
 
 @app.post("/register")
 def register(email: str, password: str, db: Session = Depends(get_db)):
-    print("REGISTER CALLED", email)
-
     existing_user = db.query(models.User).filter(models.User.email == email).first()
 
     if existing_user:
@@ -138,7 +136,12 @@ def register(email: str, password: str, db: Session = Depends(get_db)):
     db.refresh(user)
 
     verify_link = f"{FRONTEND_URL}/verify-email?token={verification_token}"
-    send_verification_email(user.email, verify_link)
+    try:
+        send_verification_email(user.email, verify_link)
+    except Exception as e:
+        print("EMAIL ERROR: ", repr(e))
+        raise HTTPException(status_code=500, detail=f"Failed to send verification email: {str(e)}")
+    
     return {"message": "User created. Check your email."}
 
 @app.get("/verify-email")
