@@ -10,4 +10,4 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://saas-trackig-jobs-2d13.vercel.app")
-EMAIL_FROM = os.getenv("EMAIL_FROM", "onboarding@resend.dev")
+RESEND_EMAIL_FROM = os.getenv("RESEND_EMAIL_FROM", "onboarding@resend.dev")
