@@ -60,19 +60,19 @@ https://saas-trackig-jobs-2d13.vercel.app
 
 ### Login
 
-![Login](./frontend/public/screens/login.PNG)
+![Login](./frontend/public/screens/Login.PNG)
 
 ### Register
 
-![Register](./frontend/public/screens/register.PNG)
+![Register](./frontend/public/screens/Register.PNG)
 
 ### Dashboard
 
-![Dashboard](./frontend/public/screens/dashboard.PNG)
+![Dashboard](./frontend/public/screens/Dashboard.PNG)
 
 ### Edit
 
-![Edit](./frontend/public/screens/edit.PNG)
+![Edit](./frontend/public/screens/Edit.PNG)
 
 ## Що було реалізовано
 
