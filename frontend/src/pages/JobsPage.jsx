@@ -36,7 +36,7 @@ function JobsPage({ setToken }) {
         setError("");
 
         if (!title.trim()) {
-          setError("Введи назву job");
+          setError("Введи назву доходу");
           return;
         }
 
@@ -66,7 +66,7 @@ function JobsPage({ setToken }) {
             fetchJobs();
         } catch (err) {
             console.log("SAVE JOB ERROR: ", err);
-            setError("Не вдалося зберегти job");
+            setError("Не вдалося зберегти дохід");
         } finally {
           setSaving(false);
         }
@@ -85,7 +85,7 @@ function JobsPage({ setToken }) {
     };
 
     const handleDeleteJob = async (jobId) => {
-      const confirmed = window.confirm("Точно видалити цей job?");
+      const confirmed = window.confirm("Точно видалити цей дохід?");
       if (!confirmed) return;
 
       setDeletingId(jobId);
@@ -95,7 +95,7 @@ function JobsPage({ setToken }) {
           fetchJobs();
       } catch (err) {
           console.log("DELETE JOB ERROR: ", err)
-          setError("Не вдалося видалити job");
+          setError("Не вдалося видалити дохід");
       } finally {
         setDeletingId(null);
       }
@@ -130,7 +130,7 @@ function JobsPage({ setToken }) {
           }}
         >
           <div>
-            <h1 style={{ margin: 0 }}>Мої jobs</h1>
+            <h1 style={{ margin: 0 }}>Мої доходи</h1>
             <p style={{ color: "#94a3b8", marginTop: "8px" }}>
               Керуй своїми записами та доходом
             </p>
@@ -166,12 +166,12 @@ function JobsPage({ setToken }) {
               boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
             }}
           >
-            <h2 style={{ marginTop: 0 }}>Список jobs</h2>
+            <h2 style={{ marginTop: 0 }}>Список доходів</h2>
 
             {loading ? (
-              <p style={{ color: "#94a3b8" }}>Завантаження jobs...</p>
+              <p style={{ color: "#94a3b8" }}>Завантаження...</p>
             ) : jobs.length === 0 ? (
-              <p style={{ color: "#94a3b8" }}>Поки що немає жодного job.</p>
+              <p style={{ color: "#94a3b8" }}>Поки що немає жодного запису.</p>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {jobs.map((job) => (
@@ -255,7 +255,7 @@ function JobsPage({ setToken }) {
               }}
             >
               <h2 style={{ marginTop: 0 }}>
-                {editingJobId ? "Редагувати job" : "Додати job"}
+                {editingJobId ? "Редагувати запис" : "Додати запис"}
                 </h2>
 
               <form
@@ -268,7 +268,7 @@ function JobsPage({ setToken }) {
               >
                 <input
                   type="text"
-                  placeholder="Назва job"
+                  placeholder="Назва запису"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   style={{
